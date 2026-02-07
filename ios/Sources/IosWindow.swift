@@ -5,6 +5,7 @@ import WebKit
 
 class OpenArgs: Decodable {
     let url: String
+    let title: String?
 }
 
 class IosWindow: Plugin {
@@ -25,6 +26,7 @@ class IosWindow: Plugin {
             // Create the new view controller
             let newVC = NewViewController()
             newVC.url = args.url
+            newVC.windowTitle = args.title ?? "Sign in"
 
             // Wrap in navigation controller for proper presentation
             let navController = UINavigationController(rootViewController: newVC)

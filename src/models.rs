@@ -4,4 +4,5 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct OpenRequest {
     pub url: String,
+    pub title: Option<String>,
 }
