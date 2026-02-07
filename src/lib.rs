@@ -35,7 +35,7 @@ impl<R: Runtime, T: Manager<R>> crate::TauriPluginIosWindowExt<R> for T {
 /// Initializes the plugin.
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("ios-window")
-        .invoke_handler(tauri::generate_handler![commands::open])
+        .invoke_handler(tauri::generate_handler![commands::open, commands::close])
         .setup(|app, api| {
             #[cfg(mobile)]
             let tauri_plugin_ios_window = mobile::init(app, api)?;

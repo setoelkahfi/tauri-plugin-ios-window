@@ -5,9 +5,13 @@ import WebKit
 
 class OpenArgs: Decodable {
     let url: String
+    let title: String?
 }
 
 class IosWindow: Plugin {
+
+    // Keep track of the presented navigation controller
+    private static var presentedNavController: UINavigationController?
 
     @objc public func open(_ invoke: Invoke) throws {
         let args = try invoke.parseArgs(OpenArgs.self)
@@ -25,6 +29,7 @@ class IosWindow: Plugin {
             // Create the new view controller
             let newVC = NewViewController()
             newVC.url = args.url
+            newVC.windowTitle = args.title ?? "Sign in"
 
             // Wrap in navigation controller for proper presentation
             let navController = UINavigationController(rootViewController: newVC)
@@ -46,6 +51,23 @@ class IosWindow: Plugin {
 
             // Present the popover
             viewController.present(navController, animated: true)
+
+            // Store reference for programmatic dismissal
+            IosWindow.presentedNavController = navController
+        }
+    }
+
+    @objc public func close(_ invoke: Invoke) throws {
+        // Resolve immediately
+        invoke.resolve()
+
+        // Dismiss on main thread
+        DispatchQueue.main.async {
+            if let navController = IosWindow.presentedNavController {
+                navController.dismiss(animated: true) {
+                    IosWindow.presentedNavController = nil
+                }
+            }
         }
     }
 }
