@@ -1,8 +1,14 @@
 [package]
 name = "tauri-plugin-ios-window"
-version = "0.1.0"
+version = "1.0.0"
 authors = [ "Seto Elkahfi <seto.elkahfi@gmail.com>" ]
 description = "Tauri plugin for iOS window management"
+license = "MIT"
+homepage = "https://github.com/setoelkahfi/tauri-plugin-ios-window"
+repository = "https://github.com/setoelkahfi/tauri-plugin-ios-window"
+documentation = "https://docs.rs/tauri-plugin-ios-window"
+categories = ["api-bindings", "multimedia", "os"]
+keywords = ["tauri", "ios", "mobile", "plugin", "darwin", "apple"]
 edition = "2021"
 rust-version = "1.77.2"
 exclude = ["/examples", "/dist-js", "/guest-js", "/node_modules"]
