@@ -10,6 +10,9 @@ class OpenArgs: Decodable {
 
 class IosWindow: Plugin {
 
+    // Keep track of the presented navigation controller
+    private static var presentedNavController: UINavigationController?
+
     @objc public func open(_ invoke: Invoke) throws {
         let args = try invoke.parseArgs(OpenArgs.self)
 
@@ -48,6 +51,23 @@ class IosWindow: Plugin {
 
             // Present the popover
             viewController.present(navController, animated: true)
+
+            // Store reference for programmatic dismissal
+            IosWindow.presentedNavController = navController
+        }
+    }
+
+    @objc public func close(_ invoke: Invoke) throws {
+        // Resolve immediately
+        invoke.resolve()
+
+        // Dismiss on main thread
+        DispatchQueue.main.async {
+            if let navController = IosWindow.presentedNavController {
+                navController.dismiss(animated: true) {
+                    IosWindow.presentedNavController = nil
+                }
+            }
         }
     }
 }

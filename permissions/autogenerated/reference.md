@@ -6,6 +6,7 @@ Default permissions for the plugin
 
 - `allow-ping`
 - `allow-open`
+- `allow-close`
 
 ## Permission Table
 
@@ -15,6 +16,32 @@ Default permissions for the plugin
 <th>Description</th>
 </tr>
 
+
+<tr>
+<td>
+
+`ios-window:allow-close`
+
+</td>
+<td>
+
+Enables the close command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`ios-window:deny-close`
+
+</td>
+<td>
+
+Denies the close command without any pre-configured scope.
+
+</td>
+</tr>
 
 <tr>
 <td>

@@ -8,3 +8,8 @@ use crate::TauriPluginIosWindowExt;
 pub(crate) async fn open<R: Runtime>(app: AppHandle<R>, payload: OpenRequest) -> Result<()> {
     app.tauri_plugin_ios_window().open(payload)
 }
+
+#[command]
+pub(crate) async fn close<R: Runtime>(app: AppHandle<R>) -> Result<()> {
+    app.tauri_plugin_ios_window().close()
+}

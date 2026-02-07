@@ -28,4 +28,10 @@ impl<R: Runtime> TauriPluginIosWindow<R> {
             .run_mobile_plugin("open", payload)
             .map_err(Into::into)
     }
+
+    pub fn close(&self) -> crate::Result<()> {
+        self.0
+            .run_mobile_plugin::<()>("close", ())
+            .map_err(Into::into)
+    }
 }

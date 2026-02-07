@@ -1,6 +1,6 @@
 <script>
     import Greet from "./lib/Greet.svelte";
-    import { open } from "tauri-plugin-ios-window-api";
+    import { open, close } from "tauri-plugin-ios-window-api";
 
     // Environment configuration
     let environment = $state("production"); // Toggle between "production" and "development"
@@ -66,6 +66,71 @@
         }
     }
 
+    // Complete OAuth flow example with callback handling
+    async function completeOAuthFlow() {
+        try {
+            const baseUrl = getBaseUrl();
+            const redirectUri = "http://localhost:8080/oauth/callback";
+            const redirectUrl = `${baseUrl}/synch-apple/auth?redirect_uri=${encodeURIComponent(redirectUri)}`;
+
+            console.log("Starting OAuth flow...");
+            await open(redirectUrl, "Sign in with Apple");
+
+            // Simulate OAuth callback after 3 seconds
+            setTimeout(async () => {
+                console.log("OAuth callback received (simulated)");
+                console.log("Processing authentication...");
+
+                // Simulate token exchange
+                setTimeout(async () => {
+                    console.log("✓ Authentication successful!");
+                    console.log("Closing OAuth window...");
+
+                    // Close the window after successful auth
+                    await close();
+                    console.log("✓ OAuth flow complete");
+
+                    // Show success message to user
+                    alert("Successfully signed in with Apple!");
+                }, 1000);
+            }, 3000);
+        } catch (error) {
+            console.error("OAuth flow failed:", error);
+        }
+    }
+
+    async function openWithAutoClose() {
+        try {
+            const baseUrl = getBaseUrl();
+            const redirectUri = "http://localhost:8080/oauth/callback";
+            const redirectUrl = `${baseUrl}/synch-apple/auth?redirect_uri=${encodeURIComponent(redirectUri)}`;
+
+            await open(redirectUrl, "Auto-close Demo");
+            console.log("Window opened, will auto-close in 5 seconds...");
+
+            // Auto-close after 5 seconds
+            setTimeout(async () => {
+                try {
+                    await close();
+                    console.log("Window closed programmatically");
+                } catch (error) {
+                    console.error("Failed to close window:", error);
+                }
+            }, 5000);
+        } catch (error) {
+            console.error("Failed to open window:", error);
+        }
+    }
+
+    async function closeWindow() {
+        try {
+            await close();
+            console.log("Window closed successfully");
+        } catch (error) {
+            console.error("Failed to close window:", error);
+        }
+    }
+
     function toggleEnvironment() {
         environment =
             environment === "production" ? "development" : "production";
@@ -113,6 +178,51 @@
                 />
             </svg>
             Sign in with Apple (SplitFire)
+        </button>
+
+        <button onclick={completeOAuthFlow} class="btn btn-success">
+            <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Complete OAuth Flow Demo
+        </button>
+
+        <button onclick={openWithAutoClose} class="btn btn-warning">
+            <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Auto-close Demo (5s)
+        </button>
+
+        <button onclick={closeWindow} class="btn btn-danger">
+            <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Close Window
         </button>
     </div>
 </main>
@@ -201,5 +311,38 @@
         font-size: 0.875rem;
         color: #888;
         margin: 0;
+    }
+
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #000;
+    }
+
+    .btn-warning:hover {
+        background: #e0a800;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
     }
 </style>

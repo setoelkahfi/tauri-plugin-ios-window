@@ -19,4 +19,10 @@ impl<R: Runtime> TauriPluginIosWindow<R> {
         println!("Opening window with URL: {}", payload.url);
         Ok(())
     }
+
+    pub fn close(&self) -> crate::Result<()> {
+        // Desktop implementation - no-op since this is iOS-specific
+        println!("Closing iOS window (no-op on desktop)");
+        Ok(())
+    }
 }
